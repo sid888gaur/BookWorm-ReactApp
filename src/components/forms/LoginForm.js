@@ -11,7 +11,7 @@ class LoginForm extends React.Component {
 			password: ""
 		},
 		loading: false,
-		errors: {}
+		Errors: {}
 	};
 
 	onChange = e => 
@@ -20,36 +20,36 @@ class LoginForm extends React.Component {
 		});
 
 	onSubmit = () =>{
-		const errors = this.validate(this.state.data);
-		this.setState({ errors });
-		if (Object.keys(errors).length === 0){
+		const Errors = this.validate(this.state.data);
+		this.setState({ Errors });
+		if (Object.keys(Errors).length === 0){
 			this.setState({ loading: true });
 			this.props
 				.submit(this.state.data)
 				.catch(err => 
-					this.setState({ errors: err.response.data.errors, loading: false })
+					this.setState({ errors: err.response.data.Errors, loading: false })
 				);
 		}
 	}
 
 	validate = (data) =>{
-		const errors = {};
-		if(!Validator.isEmail(data.email)) errors.email = "Invalid Email";
-		if(!data.password) errors.password = "Can't be empty";
-		return errors;
+		const Errors = {};
+		if(!Validator.isEmail(data.email)) Errors.email = "Invalid Email";
+		if(!data.password) Errors.password = "Can't be empty";
+		return Errors;
 	}
 
 	render(){
-		const { data, errors, loading } = this.state;
+		const { data, Errors, loading } = this.state;
 		return(
 			<Form onSubmit={this.onSubmit} loading={loading}>
-				{ errors.global && (
+				{ Errors.global && (
 					<Message negative>
 						<Message.Header>Something went wrong</Message.Header>
-						<p>{errors.global}</p>
+						<p>{Errors.global}</p>
 					</Message>
 				)}
-				<Form.Field error={!!errors.email}>
+				<Form.Field error={!!Errors.email}>
 					<label htmlFor="email">Email</label>
 					<input 
 						type="email" 
@@ -59,9 +59,9 @@ class LoginForm extends React.Component {
 						value = {data.email}
 						onChange = {this.onChange}
 					/>
-					{errors.email && <InlineError text={errors.email} />}
+					{Errors.email && <InlineError text={Errors.email} />}
 				</Form.Field>
-				<Form.Field error={!!errors.password}>
+				<Form.Field error={!!Errors.password}>
 					<label htmlFor="password">Password</label>
 					<input 
 						type="password" 
@@ -71,7 +71,7 @@ class LoginForm extends React.Component {
 						value = {data.password}
 						onChange = {this.onChange}
 					/>
-					{errors.password && <InlineError text={errors.password} />}
+					{Errors.password && <InlineError text={Errors.password} />}
 				</Form.Field>
 				<Button primary>Login</Button>
 			</Form>
